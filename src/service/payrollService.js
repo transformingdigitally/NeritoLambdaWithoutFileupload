@@ -59,17 +59,19 @@ module.exports = {
                 UserName: item["userName"],
                 OriginAccount: organization.OriginAccount,
                 Email: item["beneficiaryEmail"],
-                DestinationAccount: neritoUtils.zeroAppenderOnLeft(
+                DestinationAccount: neritoUtils.appendValueOnLeft(
                   item["destinationAccount"],
-                  constant.maxLength.DESTINATIONACCOUNT
+                  constant.maxLength.DESTINATIONACCOUNT,
+                  "0"
                 ),
                 RFC: organization.RFC,
                 ImportAmount: neritoUtils.addDecimalPlaces(
                   item["importAmount"]
                 ),
-                ReferenceDate: neritoUtils.zeroAppenderOnLeft(
+                ReferenceDate: neritoUtils.appendValueOnLeft(
                   item["reference"],
-                  constant.maxLength.REFERENCE
+                  constant.maxLength.REFERENCE,
+                  "0"
                 ),
                 Description: item["description"],
                 OriginCurrency: 1,
@@ -146,7 +148,7 @@ module.exports = {
       TableName: payrolls_table,
       IndexName: "list-payroll-index",
       KeyConditionExpression: "#SK = :SK",
-      FilterExpression: "#Status=:Status and #State = :StatePending",
+      FilterExpression: "#Status=:Status and #State = :StatePending or #State = :StateError",
       ExpressionAttributeNames: {
         "#SK": "SK",
         "#Status": "Status",
@@ -156,6 +158,7 @@ module.exports = {
         ":SK": Id,
         ":Status": true,
         ":StatePending": 0,
+        ":StateError": 2,
       },
     };
     return await service.query(params);
@@ -175,6 +178,7 @@ module.exports = {
   },
   updatePayroll: async function (Id, SK, element) {
     try {
+      element=element.trim();
       let freezeState;
       let confirmationMessage;
       let operation = element.substring(0, 2).trim();

@@ -170,7 +170,7 @@ module.exports = {
       TableName: employee_table,
       IndexName: "ListEMP",
       KeyConditionExpression: "#SK = :SK",
-      FilterExpression: "#Status=:Status and #State = :StatePending",
+      FilterExpression: "#Status=:Status and #State = :StatePending or #State = :StateError",
       ProjectionExpression:
         "CompanyId, OperationType, #Name, RFC, PhoneNumber, Contact, Email,  AccountType, Currency, BankId, AccountClabe, Id, SK",
 
@@ -184,6 +184,7 @@ module.exports = {
         ":SK": Id,
         ":Status": true,
         ":StatePending": 0,
+        ":StateError": 2,
       },
     };
     return await service.query(params);
@@ -191,12 +192,13 @@ module.exports = {
   updateEmplyee: async function (Id, SK, element) {
     try {
       let freezeState;
-      let accountHolder = element.substring(0, 60).trim();
-      let applicationDate = element.substring(60, 68).trim();
+      element=element.trim();
+      let accountHolder = element.substring(161, 221).trim();
+      let applicationDate = element.substring(221, 229).trim();
       if (!neritoUtils.isEmpty(applicationDate)) {
         applicationDate = neritoUtils.StringDateConverter(applicationDate);
       }
-      let confirmation = element.substring(68, 128).trim();
+      let confirmation = element.substring(229, 289).trim();
       if (confirmation.localeCompare("REGISTRADO EXITOSO") == 0) {
         freezeState = constant.freezeState.SUCCESS;
       } else {

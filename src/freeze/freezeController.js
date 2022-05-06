@@ -5,6 +5,8 @@ let constant = require("../constants/constant.js");
 let employeeService = require("../service/employeeService.js");
 let payrollService = require("../service/payrollService.js");
 
+
+
 const freeze_temp_bucket = process.env.freeze_temp_bucket;
 const payrollDisbursementFilesBucket =
   process.env.payrollDisbursementFilesBucket;
@@ -124,33 +126,55 @@ async function freezeData(orgId, action) {
               element.OperationType,
               constant.maxLength.OPERATIONTYPE
             );
-            json.C_AccountType = neritoUtils.spacesAppenderOnRight(
+            json.C_Name = neritoUtils.spacesAppenderOnRight(
+              "",
+              constant.maxLength.NAME
+            );
+            json.D_RFC = neritoUtils.spacesAppenderOnRight(
+              "",
+              constant.maxLength.RFC
+            );
+            json.E_Phonenumber = neritoUtils.spacesAppenderOnRight(
+              "",
+              constant.maxLength.PHONENUMBERFREEZE
+            );
+            json.F_Contact = neritoUtils.spacesAppenderOnRight(
+              "",
+              constant.maxLength.CONTACT
+            );
+            json.G_Email = neritoUtils.spacesAppenderOnRight(
+              "",
+              constant.maxLength.EMAIL
+            );            
+            json.H_AccountType = neritoUtils.spacesAppenderOnRight(
               element.AccountType,
               constant.maxLength.TYPEACCOUNT
             );
-            json.D_Currency = neritoUtils.spacesAppenderOnRight(
+            json.I_Currency = neritoUtils.spacesAppenderOnRight(
               element.Currency,
               constant.maxLength.CURRENCY
             );
-            json.E_BankId = neritoUtils.spacesAppenderOnRight(
+            json.J_BankId = neritoUtils.spacesAppenderOnRight(
               element.BankId,
               constant.maxLength.BANKID
             );
-            json.F_Entity = neritoUtils.spacesAppenderOnRight(
+            json.K_Entity = neritoUtils.spacesAppenderOnRight(
               "01",
               constant.maxLength.ENTITY
             );
-            json.G_Plaza = neritoUtils.spacesAppenderOnRight(
+            json.L_Plaza = neritoUtils.spacesAppenderOnRight(
               "001",
               constant.maxLength.PLAZA
             );
-            json.H_AccountClabe = neritoUtils.spacesAppenderOnRight(
+            json.M_AccountClabe = neritoUtils.appendValueOnLeft(
               element.AccountClabe,
-              constant.maxLength.ACCOUNTCLABE
+              constant.maxLength.ACCOUNTCLABE,
+              "0"
             );
-            json.I_ExtraInfo = neritoUtils.spacesAppenderOnRight(
+            json.N_ExtraInfo = neritoUtils.appendValueOnLeft(
               "",
-              constant.maxLength.EXTRAINFO
+              constant.maxLength.EXTRAINFO,
+              "1"
             );
             jsonArray.push(json);
           });
@@ -219,25 +243,28 @@ async function freezeData(orgId, action) {
               element.Operation,
               constant.maxLength.OPERATIONTYPE
             );
-            json.B_UserName = neritoUtils.spacesAppenderOnRight(
-              element.UserName,
-              constant.maxLength.USERNAME
+            json.B_CompanyId = neritoUtils.spacesAppenderOnRight(
+              organization.Id,
+              constant.maxLength.COMPANYID
             );
-            json.C_OriginAccount = neritoUtils.zeroAppenderOnLeft(
+            json.C_OriginAccount = neritoUtils.appendValueOnLeft(
               element.OriginAccount,
-              constant.maxLength.ORIGINACCOUNT
+              constant.maxLength.ORIGINACCOUNT,
+              "0"
             );
-            json.D_DestinationAccount = neritoUtils.zeroAppenderOnLeft(
+            json.D_DestinationAccount = neritoUtils.appendValueOnLeft(
               element.DestinationAccount,
-              constant.maxLength.DESTINATIONACCOUNT
+              constant.maxLength.DESTINATIONACCOUNT,
+              "0"
             );
             json.E_ImportAmount = neritoUtils.fixDecimalPlaces(
               element.ImportAmount,
               constant.maxLength.IMPORTAMOUNT
             );
-            json.F_ReferenceDate = neritoUtils.zeroAppenderOnLeft(
+            json.F_ReferenceDate = neritoUtils.appendValueOnLeft(
               element.ReferenceDate,
-              constant.maxLength.REFERENCE
+              constant.maxLength.REFERENCE,
+              "0"
             );
             json.G_Description = neritoUtils.spacesAppenderOnRight(
               element.Description,

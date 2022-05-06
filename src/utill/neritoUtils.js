@@ -120,8 +120,8 @@ module.exports = {
     //return the string "MMddyy"
     return year + month + day;
   },
-  zeroAppenderOnLeft: function (str, type) {
-    return zeroAppenderOnLeft(str, type);
+  appendValueOnLeft: function (str, type, appender) {
+    return appendValueOnLeft(str, type, appender);
   },
   spacesAppenderOnRight: function (str, length) {
     let strLength = str.length;
@@ -153,7 +153,7 @@ module.exports = {
       let number = parseFloat(val);
       number = number.toFixed(2);
       number = number * 100;
-      number = zeroAppenderOnLeft(number, type);
+      number = appendValueOnLeft(number, type,"0");
 
       return number;
     } catch (err) {
@@ -184,13 +184,13 @@ function isEmpty(obj) {
 function isEmptyStr(obj) {
   return obj === null || obj === undefined || obj.length === 0;
 }
-function zeroAppenderOnLeft(str, type) {
+function appendValueOnLeft(str, type, appender) {
   if (isEmptyStr(str)) {
-    return "".toString().padStart(type, "0");
+    return "".toString().padStart(type, appender);
   }
   let length = str.length;
   if (length === type) {
     return str;
   }
-  return str.toString().padStart(type, "0");
+  return str.toString().padStart(type, appender);
 }

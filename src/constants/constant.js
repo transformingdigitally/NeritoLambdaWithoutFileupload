@@ -67,6 +67,7 @@ module.exports = {
   maxLength: {
     COMPANYID: 13,
     PHONENUMBER: 16,
+    PHONENUMBERFREEZE: 15,
     OPERATIONTYPE: 2,
     CURRENCY: 7,
     NAME: 60,

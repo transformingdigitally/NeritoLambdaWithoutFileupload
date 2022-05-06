@@ -36,7 +36,7 @@ module.exports = {
           ) {
             await readDataFromS3(element, constant.freezeBucket.PAYROLL_OUTPUT);
           } else if (
-            element.type.localeCompare(constant.freezeBucket.ACCOUNT_OUTPUT) ==
+            element.type.localeCompare(constant.freezeBucket.REGISTER_PAYROLL) ==
             0
           ) {
             await readDataFromS3(element, constant.freezeBucket.REGISTER_PAYROLL);
@@ -116,7 +116,7 @@ async function requestvalidator(json) {
           400
         );
       } else if (
-        element.type != constant.freezeBucket.ACCOUNT_OUTPUT &&
+        element.type != constant.freezeBucket.REGISTER_PAYROLL &&
         element.type != constant.freezeBucket.PAYROLL_OUTPUT
       ) {
         return neritoUtils.errorResponseJson(
