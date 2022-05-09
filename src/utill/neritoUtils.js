@@ -128,7 +128,7 @@ module.exports = {
     if (strLength === length) {
       return str;
     }
-    return str.toString().padEnd(length, "\xa0");
+    return str.toString().padEnd(length);
   },
   isEmpty: function (obj) {
     return isEmpty(obj);

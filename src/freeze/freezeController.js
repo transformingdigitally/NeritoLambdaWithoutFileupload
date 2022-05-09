@@ -5,7 +5,7 @@ let constant = require("../constants/constant.js");
 let employeeService = require("../service/employeeService.js");
 let payrollService = require("../service/payrollService.js");
 
-
+const utf8 = require("utf8");
 
 const freeze_temp_bucket = process.env.freeze_temp_bucket;
 const payrollDisbursementFilesBucket =
@@ -145,7 +145,7 @@ async function freezeData(orgId, action) {
             json.G_Email = neritoUtils.spacesAppenderOnRight(
               "",
               constant.maxLength.EMAIL
-            );            
+            );
             json.H_AccountType = neritoUtils.spacesAppenderOnRight(
               element.AccountType,
               constant.maxLength.TYPEACCOUNT
@@ -312,7 +312,7 @@ async function freezeData(orgId, action) {
       let csvData = csvjson.toCSV(jsonArray, options);
       csvData = csvData.replace(/\r?\n/, "");
       csvData = csvData.replace(/,/g, "");
-
+      csvData = utf8.encode(csvData);
       try {
         if (action.localeCompare(constant.action.FREEZE_PAYROLL) == 0) {
           const result = await payrollService.updatePayrollFileDetails(
